@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
-import static org.apache.coyote.http11.Constants.A;
 
 public class ConcurrentCalculator{
 
     /**
      * 多线程求和:将任务按照线程的数量划分，并行计算和，最后汇总
+     *    关键点：
+     *         Future.get方法是一个阻塞方法，当submit提交多个任务时，只有所有任务都完成后，才能使用get按照任务的提交顺序得到返回结果，
      * @param args
      */
     public static void main(String[] args) throws ExecutionException, InterruptedException {
@@ -55,6 +56,7 @@ public class ConcurrentCalculator{
             SumRun sumRun = new SumRun(start, end, arr);
 
             //这是返回结果也是任务
+
             FutureTask<Integer> integerFutureTask = new FutureTask<>(sumRun);
             executorService.submit(integerFutureTask);
             result.add(integerFutureTask);
